@@ -2,8 +2,6 @@ package org.example;
 
 import au.com.bytecode.opencsv.CSVReader;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.MethodSource;
 import java.io.FileReader;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -16,33 +14,29 @@ import java.util.regex.Pattern;
 import static java.nio.file.Files.readAllLines;
 import static org.junit.jupiter.api.Assertions.*;
 
-class DataSetTest {
-    Map<Person, Course> clientsData = new HashMap<>();
+class DataSetTest{
+    DataSetTest() throws Exception {}
 
-//    @ParameterizedTest
-//    @CsvFileSource(resources = "clientsData.csv")
-//    void testWithCsvFileSource(String name, int age, int duration, String title) {
-//        assertNotNull(name, title);
-//        assertTrue(age > 0 && duration > 0);
-//        clientsData.put(new Person(name, age), new Course(title, duration));
-//    }
+    Map<Person, Course> clientsData = fillClientsDataFromCSV();
 
-    public static void main(String[] args) throws Exception
+    private static Map<Person, Course> fillClientsDataFromCSV() throws Exception
     {
-        //Build reader instance
-        CSVReader reader = new CSVReader(new FileReader("data.csv"), ',', '"', 1);
-        //Read all rows at once
+        Map<Person, Course> clientsData = new HashMap<>();
+        CSVReader reader = new CSVReader(new FileReader(
+                Objects.requireNonNull(DataSetTest.class.getResource("clientsData.csv")).getPath()),
+                ',', '"', 0);
         List<String[]> allRows = reader.readAll();
-        //Read CSV line by line and use the string array as you want
         for(String[] row : allRows){
-            System.out.println(Arrays.toString(row));
+            clientsData.put(new Person(row[0], Integer.parseInt(row[1])),
+                            new Course(row[3], Integer.parseInt(row[2])));
         }
+        return clientsData;
     }
 
-    @ParameterizedTest
-    @MethodSource()
+    @Test
     void getMiddleClientAge() {
         DataSet dataSet = new DataSet(clientsData);
+
         assertTrue(Math.abs(dataSet.getMiddleClientsAge() - 39.4545) < 0.0001);
     }
 
@@ -53,7 +47,7 @@ class DataSetTest {
                 List.of(
                         "Инженер по тестированию",
                         "Режиссёр монтажа",
-                        "Python-разработчик"),
+                        "Бизнес-аналитик"),
                 dataSet.getTitlesOfTheMostPopularCourses(3)
         );
     }

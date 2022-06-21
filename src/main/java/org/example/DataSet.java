@@ -40,11 +40,11 @@ public class DataSet implements DataSetOptions{
     private static String getString(Map.Entry<Person, Course> client) {
         Person person = client.getKey();
         Course course = client.getValue();
-        return String.format("%s,%d,%s,%d\n",
+        return String.format("%s,%d,%d,%s\n",
                 person.getName(),
                 person.getAge(),
-                course.getTitle(),
-                course.getDuration());
+                course.getDuration(),
+                course.getTitle());
     }
 
     @Override
