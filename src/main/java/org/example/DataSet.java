@@ -43,7 +43,7 @@ public class DataSet implements DataSetOptions{
         return String.format("%s,%d,%d,%s\n",
                 person.getName(),
                 person.getAge(),
-                course.getDuration(),
+                course.getDurationMonths(),
                 course.getTitle());
     }
 
@@ -65,10 +65,5 @@ public class DataSet implements DataSetOptions{
                 .stream()
                 .map(DataSet::getString)
                 .toList();
-    }
-
-    public static void main(String[] args) {
-//        DataSet dataSet = new DataSet(clientsData);
-//        System.out.println(dataSet.getTitlesOfTheMostPopularCourses(3));
     }
 }

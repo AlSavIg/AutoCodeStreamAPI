@@ -13,7 +13,7 @@ public class Course {
         return courseTitle;
     }
 
-    public int getDuration() {
+    public int getDurationMonths() {
         return courseDuration;
     }
 }
